@@ -19,6 +19,7 @@
   "homepage": "https://github.com/shynome/aliyun-monitor-report-next#readme",
   "dependencies": {
     "@alicloud/pop-core": "^1.7.7",
+    "axios": "^0.19.0",
     "next": "^9.0.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
