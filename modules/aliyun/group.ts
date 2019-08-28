@@ -13,7 +13,7 @@ export interface Group {
 }
 
 export const GetGroupList = (aliyun: Aliyun) => async (params: GetGroupListParams) => {
-  let client = aliyun.GetClient(params.RegionID)
+  let client = aliyun.GetClient()
   let result: { Resources: { Resource: Group[] } } = await client.request(
     'DescribeMonitorGroups',
     {
@@ -48,7 +48,7 @@ export interface GroupResource {
 
 export const GetGroupResources = (aliyun: Aliyun) => async (params: GetGroupResourcesParams): Promise<GroupResource[]> => {
 
-  const client = aliyun.GetClient(params.RegionID)
+  const client = aliyun.GetClient()
 
   let result: { Resources: { Resource: GroupResource[] } } = await client.request(
     'DescribeMonitorGroupInstances',

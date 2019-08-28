@@ -10,7 +10,7 @@ export class Aliyun {
     readonly AccessKey: string,
     readonly AccessKeySecret: string,
   ) { }
-  GetClient(regionID: string) {
+  GetClient() {
     return new Core({
       accessKeyId: this.AccessKey,
       accessKeySecret: this.AccessKeySecret,
