@@ -6,6 +6,7 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'babel-jest'
   },
+  testEnvironment: "node",
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   collectCoverage: false
