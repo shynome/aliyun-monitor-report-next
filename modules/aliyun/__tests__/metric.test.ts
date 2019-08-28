@@ -1,7 +1,7 @@
 
-import { GetMetricList } from "../metric";
+import { GetMetricList, GetMetricTop } from "../metric";
 import { aliyun, getECSDimensions } from "./aliyun";
-
+import { Dimension } from "../dimension";
 
 describe('Aliyun', () => {
 
@@ -18,5 +18,13 @@ describe('Aliyun', () => {
     })
     expect(datapoints.length).toBeGreaterThanOrEqual(1)
   })
-  
+  it('GetMetricTop', async () => {
+    let d: Dimension[] = JSON.parse(dimensions)
+    let datapoints = await GetMetricTop(aliyun)({
+      Dimensions: dimensions,
+      Namespace: 'acs_ecs',
+      MetricName: 'CPUUtilization',
+    })
+    expect(datapoints.length).toBe(d.length)
+  })
 })

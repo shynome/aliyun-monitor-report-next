@@ -22,7 +22,7 @@ export interface GetMetricListParams extends CommonParams {
   Length?: string
 }
 
-export const GetMetricList = (aliyun: Aliyun) => async (params: GetMetricListParams) => {
+export const GetMetricList = (aliyun: Aliyun) => async (params: GetMetricListParams): Promise<Datapoint[]> => {
 
   let client = aliyun.GetClient()
 
@@ -35,9 +35,45 @@ export const GetMetricList = (aliyun: Aliyun) => async (params: GetMetricListPar
   )
 
   let datapoints: Datapoint[] = JSON.parse(result.Datapoints)
-  
+
   return datapoints
 
 }
 
+// GetMetricTopParams type
+export interface GetMetricTopParams extends GetMetricListParams {
+  Orderby?: 'Maximum' | 'Average'
+}
 
+export const GetMetricTop = (aliyun: Aliyun) => async (params: GetMetricTopParams): Promise<Datapoint[]> => {
+
+  params = {
+    Orderby: 'Maximum',
+    ...params,
+  }
+
+  let client = aliyun.GetClient()
+
+  let result: { Datapoints: string } = await client.request(
+    'DescribeMetricTop',
+    params,
+    { method: 'POST' }
+  )
+
+  let filters = new Map<string, number>()
+  let datapoints: Datapoint[] = JSON.parse(result.Datapoints)
+
+  // datapoints = datapoints.filter(
+  //   (d) => {
+  //     let latest_value = filters.get(d.instanceId)
+  //     let current_value = d[params.Orderby]
+  //     if (typeof latest_value !== 'undefined' && latest_value > current_value) {
+  //       return false
+  //     }
+  //     filters.set(d.instanceId, current_value)
+  //     return true
+  //   }
+  // )
+
+  return datapoints
+}

@@ -1,4 +1,4 @@
 
 export interface Dimension {
-  InstanceId: string
+  instanceId: string
 }

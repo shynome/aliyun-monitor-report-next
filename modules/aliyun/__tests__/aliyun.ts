@@ -13,7 +13,7 @@ export const getECSDimensions = async () => {
   let dimensions: Dimension[] = resources
     .filter(v => v.Category === 'ECS')
     .map<Dimension>(
-      ({ InstanceId }) => ({ InstanceId })
+      ({ InstanceId }) => ({ instanceId: InstanceId })
     )
 
   return JSON.stringify(dimensions)
