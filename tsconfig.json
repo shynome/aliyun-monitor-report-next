@@ -17,6 +17,7 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
+      "~pages/*": ["pages/*"],
       "~components/*": ["components/*"],
       "~utils/*": ["utils/*"],
       "~static/*": ["static/*"],
