@@ -2,11 +2,7 @@
 import Core from "@alicloud/pop-core";
 
 export interface CommonParams {
-  RegionID: string
-}
-
-export enum RegionID {
-  
+  RegionID?: string
 }
 
 export class Aliyun {
