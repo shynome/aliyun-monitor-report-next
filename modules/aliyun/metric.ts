@@ -43,12 +43,39 @@ export const GetMetricList = (aliyun: Aliyun) => async (params: GetMetricListPar
 // GetMetricTopParams type
 export interface GetMetricTopParams extends GetMetricListParams {
   Orderby?: 'Maximum' | 'Average'
+  OrderDesc?: 'False'
+  Length?: '1'
 }
 
 export const GetMetricTop = (aliyun: Aliyun) => async (params: GetMetricTopParams): Promise<Datapoint[]> => {
 
+  let orderBy = params.Orderby || 'Maximum'
+
   params = {
-    Orderby: 'Maximum',
+    Express: `{"orderby":"${orderBy}"}`,
+    Length: '1',
+    ...params,
+  }
+
+  let client = aliyun.GetClient()
+
+  let result: { Datapoints: string } = await client.request(
+    'DescribeMetricList',
+    params,
+    { method: 'POST' }
+  )
+
+  let filters = new Map<string, number>()
+  let datapoints: Datapoint[] = JSON.parse(result.Datapoints)
+
+  return datapoints
+}
+
+
+export const notWorkGetMetricTop = (aliyun: Aliyun) => async (params: GetMetricTopParams): Promise<Datapoint[]> => {
+
+  params = {
+    Orderby: params.Orderby || 'Maximum',
     ...params,
   }
 
@@ -62,18 +89,6 @@ export const GetMetricTop = (aliyun: Aliyun) => async (params: GetMetricTopParam
 
   let filters = new Map<string, number>()
   let datapoints: Datapoint[] = JSON.parse(result.Datapoints)
-
-  // datapoints = datapoints.filter(
-  //   (d) => {
-  //     let latest_value = filters.get(d.instanceId)
-  //     let current_value = d[params.Orderby]
-  //     if (typeof latest_value !== 'undefined' && latest_value > current_value) {
-  //       return false
-  //     }
-  //     filters.set(d.instanceId, current_value)
-  //     return true
-  //   }
-  // )
 
   return datapoints
 }
