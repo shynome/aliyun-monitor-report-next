@@ -31,7 +31,6 @@ export const GetMetricList = (aliyun: Aliyun) => async (params: GetMetricListPar
     {
       ...params
     },
-    { method: 'POST' }
   )
 
   let datapoints: Datapoint[] = JSON.parse(result.Datapoints)
@@ -62,7 +61,6 @@ export const GetMetricTop = (aliyun: Aliyun) => async (params: GetMetricTopParam
   let result: { Datapoints: string } = await client.request(
     'DescribeMetricList',
     params,
-    { method: 'POST' }
   )
 
   let filters = new Map<string, number>()
@@ -84,7 +82,6 @@ export const notWorkGetMetricTop = (aliyun: Aliyun) => async (params: GetMetricT
   let result: { Datapoints: string } = await client.request(
     'DescribeMetricTop',
     params,
-    { method: 'POST' }
   )
 
   let filters = new Map<string, number>()

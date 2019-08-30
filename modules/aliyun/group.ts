@@ -20,7 +20,6 @@ export const GetGroupList = (aliyun: Aliyun) => async (params: GetGroupListParam
       PageSize: '99',
       ...params,
     },
-    { method: 'POST' }
   )
   let resources = result.Resources.Resource.map<Group>(
     ({ GroupId, GroupName, Type }) => ({ GroupId, GroupName, Type })
@@ -56,7 +55,6 @@ export const GetGroupResources = (aliyun: Aliyun) => async (params: GetGroupReso
       PageSize: '99',
       ...params,
     },
-    { method: 'POST' }
   )
 
   let resources = result.Resources.Resource.map<GroupResource>(

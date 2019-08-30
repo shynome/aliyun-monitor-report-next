@@ -16,6 +16,9 @@ export class Aliyun {
       accessKeySecret: this.AccessKeySecret,
       endpoint: 'https://metrics.aliyuncs.com',
       apiVersion: '2019-01-01',
+      opts: {
+        method: 'POST',
+      },
     })
   }
   static required_env = ['AccessKey', 'AccessKeySecret']
