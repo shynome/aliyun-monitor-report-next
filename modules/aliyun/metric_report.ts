@@ -123,12 +123,15 @@ export const GetMetricReport = (aliyun: Aliyun) => async (params: GetMetricRepor
         let datapoints = DatapointsArray[index]
 
         for (let datapoint of datapoints) {
+          let currentValue = datapoint[orderBy]
+          if (isNaN(currentValue)) {
+            continue
+          }
           let dimension = collectedDimensions.get(datapoint.instanceId)
-          dimension[orderBy] = datapoint[orderBy]
-          collectedDimensions.set(datapoint.instanceId, {
-            ...dimension,
-            [orderBy]: datapoint[orderBy],
-          })
+          let lastestValue = dimension[orderBy] || 0
+          if (currentValue > lastestValue) {
+            dimension[orderBy] = currentValue
+          }
         }
 
       });
@@ -145,6 +148,9 @@ export const GetMetricReport = (aliyun: Aliyun) => async (params: GetMetricRepor
       }
     }
 
+    // for (let collectDimension of needCollectDimensions) {
+    //   await insertReportArray(collectDimension)
+    // }
     await Promise.all(needCollectDimensions.map(
       collectDimension => insertReportArray(collectDimension)
     ))
@@ -153,14 +159,18 @@ export const GetMetricReport = (aliyun: Aliyun) => async (params: GetMetricRepor
 
   }
 
-  await Promise.all(
-    Object.keys(d).map(
-      async (namespace) => {
-        report[namespace] = await getReport(namespace, DefaultCollectDimensions[namespace], d[namespace])
-        return
-      }
-    )
-  )
+  for (let namespace in d) {
+    report[namespace] = await getReport(namespace, DefaultCollectDimensions[namespace], d[namespace])
+  }
+  // 这样会触发流量控制
+  // await Promise.all(
+  //   Object.keys(d).map(
+  //     async (namespace) => {
+  //       report[namespace] = await getReport(namespace, DefaultCollectDimensions[namespace], d[namespace])
+  //       return
+  //     }
+  //   )
+  // )
 
   return report
 
