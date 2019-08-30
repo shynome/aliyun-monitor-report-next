@@ -52,7 +52,6 @@ export type MetricReport = {
 export type CollectDimension = {
   DisplayName: string
   Name: string
-  Error: string
   Max: number
   Avg: number
 }
