@@ -1,6 +1,9 @@
 
 import Core from "@alicloud/pop-core";
-import { GetGroupList, GetGroupListParams } from "./group";
+import {
+  GetGroupList, GetGroupListParams,
+  GetGroupResources, GetGroupResourcesParams,
+} from "./group";
 import {
   GetMetricList, GetMetricListParams,
   GetMetricTop, GetMetricTopParams,
@@ -31,6 +34,7 @@ export class Aliyun {
   }
 
   GetGroupList = (params: GetGroupListParams) => GetGroupList(this)(params)
+  GetGroupResources = (params: GetGroupResourcesParams) => GetGroupResources(this)(params)
   GetMetricList = (params: GetMetricListParams) => GetMetricList(this)(params)
   GetMetricTop = (params: GetMetricTopParams) => GetMetricTop(this)(params)
   GetMetricReport = (params: GetMetricReportParams) => GetMetricReport(this)(params)
