@@ -16,5 +16,5 @@ describe('Aliyun', () => {
       EndTime: '2019-08-01 00:00:00',
     })
     expect(report).toBeDefined()
-  }, 24 * 60 * 60 * 1e3)
+  }, 60 * 1e3)
 })
