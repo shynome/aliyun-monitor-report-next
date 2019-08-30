@@ -18,6 +18,7 @@ export class Aliyun {
       apiVersion: '2019-01-01',
       opts: {
         method: 'POST',
+        timeout: 60 * 1e3,
       },
     })
   }
