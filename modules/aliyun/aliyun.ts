@@ -1,5 +1,11 @@
 
 import Core from "@alicloud/pop-core";
+import { GetGroupList, GetGroupListParams } from "./group";
+import {
+  GetMetricList, GetMetricListParams,
+  GetMetricTop, GetMetricTopParams,
+} from "./metric";
+import { GetMetricReport, GetMetricReportParams } from "./metric_report";
 
 export interface CommonParams {
   RegionID?: string
@@ -10,6 +16,7 @@ export class Aliyun {
     readonly AccessKey: string,
     readonly AccessKeySecret: string,
   ) { }
+
   GetClient() {
     return new Core({
       accessKeyId: this.AccessKey,
@@ -22,6 +29,12 @@ export class Aliyun {
       },
     })
   }
+
+  GetGroupList = (params: GetGroupListParams) => GetGroupList(this)(params)
+  GetMetricList = (params: GetMetricListParams) => GetMetricList(this)(params)
+  GetMetricTop = (params: GetMetricTopParams) => GetMetricTop(this)(params)
+  GetMetricReport = (params: GetMetricReportParams) => GetMetricReport(this)(params)
+
   static required_env = ['AccessKey', 'AccessKeySecret']
   static NewWithEnv() {
     let [key, secret] = this.required_env.map(k => process.env[k])
