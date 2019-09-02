@@ -24,7 +24,6 @@ class MyDocument extends Document {
           html, body, #__next{
             height: 100%;
             width: 100%;
-            overflow: hidden;
           }
           `}</style>
         </Head>
