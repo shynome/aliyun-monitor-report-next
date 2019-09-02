@@ -92,7 +92,7 @@ export const Group: React.StatelessComponent = () => {
       <TimePicker StartTime={timeDuration.StartTime} EndTime={timeDuration.EndTime} onChange={v => setTmpTimeDuration(v)} />
       <Button onClick={() => setTimeDuration(tmpTimeDuration)}>更新时间段</Button>
       <br />
-      {!groupId ? null : <Report Namespaces={namespaces} GroupID={groupId} StartTime={timeDuration.StartTime} EndTime={timeDuration.EndTime} />}
+      {!groupId ? null : <Report Namespaces={namespaces} GroupId={groupId} StartTime={timeDuration.StartTime} EndTime={timeDuration.EndTime} />}
     </div>
   )
 }

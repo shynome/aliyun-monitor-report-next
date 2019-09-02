@@ -8,7 +8,7 @@ type ReportResp = {
 }
 
 type ReportParams = {
-  GroupID: number
+  GroupId: number
   StartTime: string
   EndTime: string
   Namespaces?: string[]
@@ -38,7 +38,7 @@ export const Report: React.StatelessComponent<ReportParams> = (props) => {
 
   let [resp, setResp] = useState<ReportResp>(null as any)
   let reqParams: ReportParams = {
-    GroupID: props.GroupID,
+    GroupId: props.GroupId,
     StartTime: props.StartTime,
     EndTime: props.EndTime,
   }
