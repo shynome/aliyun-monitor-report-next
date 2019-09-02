@@ -1,6 +1,6 @@
 import { Aliyun, CommonParams } from "./aliyun";
 import { GroupResource, GetGroupResources } from "./group";
-import { GetMetricTopParams, GetMetricTop } from "./metric";
+import { GetMetricTopParams, GetMetricTop, Datapoint } from "./metric";
 import { Dimension as instanceDimension } from "./dimension";
 import { DefaultCollectDimensions } from "./metric_report.data";
 
@@ -52,8 +52,8 @@ export type MetricReport = {
 export type CollectDimension = {
   DisplayName: string
   Name: string
-  Max: number
-  Avg: number
+  Maximum: number
+  Average: number
 }
 
 export interface Report extends GroupResource {
@@ -112,6 +112,13 @@ export const GetMetricReport = (aliyun: Aliyun) => async (params: GetMetricRepor
           StartTime: params.StartTime,
           EndTime: params.EndTime,
           Orderby: orderBy,
+        }).catch(err => {
+          return instances.map((instance) => ({
+            instanceId: instance.instanceId,
+            Average: null,
+            Maximum: null,
+            Timestamp: null,
+          } as Datapoint))
         })
         return datapoints
       })
