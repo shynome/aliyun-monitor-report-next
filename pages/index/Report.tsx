@@ -52,7 +52,7 @@ export const Report: React.StatelessComponent<ReportParams> = (props) => {
                   let h = report.Dimensions.length
                   return report.Dimensions.sort((a, b) => a.Name > b.Name ? -1 : 1).map((d, i) => (
                     <TableRow key={report.Id + d.Name}>
-                      {i === 0 && <TableCell rowSpan={h} style={{ width: 180 }}>{report.InstanceName || report.InstanceId}</TableCell>}
+                      {i === 0 && <TableCell rowSpan={h} style={{ width: 180 }}><pre>{report.InstanceName || report.InstanceId}</pre></TableCell>}
                       <TableCell>{d.DisplayName}</TableCell>
                       <TableCell align="right">{isEmpty(d.Maximum) ? "无值" : d.Maximum.toFixed(2)}</TableCell>
                       <TableCell align="right">{isEmpty(d.Average) ? "无值" : d.Average.toFixed(2)}</TableCell>
