@@ -43,15 +43,20 @@ export interface GetMetricReportParams {
   EndTime: string
   /**应用分组的 ID */
   GroupId: number
+  /**传入需要收集的产品类别和维度 */
+  NeedCollectDimensions?: { [namespace: string]: NeedCollectDimension[] }
 }
 
 export type MetricReport = {
   [Category: string]: Report[]
 }
 
-export type CollectDimension = {
+export interface NeedCollectDimension {
   DisplayName: string
   Name: string
+}
+
+export interface CollectDimension extends NeedCollectDimension {
   Maximum: number
   Average: number
 }
@@ -79,7 +84,7 @@ export const GetMetricReport = (aliyun: Aliyun) => async (params: GetMetricRepor
     d[namespace].push(item)
   }
 
-  const getReport = async (namespace: string, needCollectDimensions: CollectDimension[], resources: GroupResource[]): Promise<Report[]> => {
+  const getReport = async (namespace: string, needCollectDimensions: NeedCollectDimension[], resources: GroupResource[]): Promise<Report[]> => {
 
     let reportArray = new Map<string, Report>(
       resources.map((resource) => [
@@ -96,11 +101,14 @@ export const GetMetricReport = (aliyun: Aliyun) => async (params: GetMetricRepor
     )
     let instancesStr = JSON.stringify(instances)
 
-    const dealCollectDimension = async (collectDimension: CollectDimension): Promise<Map<string, CollectDimension>> => {
+    const dealCollectDimension = async (collectDimension: NeedCollectDimension): Promise<Map<string, CollectDimension>> => {
 
       let collectedDimensions = new Map<string, CollectDimension>(
         instances.map(
-          ({ instanceId }) => [instanceId, { ...collectDimension }]
+          ({ instanceId }) => [
+            instanceId,
+            { ...collectDimension, Maximum: null, Average: null }
+          ]
         )
       )
 
@@ -145,7 +153,7 @@ export const GetMetricReport = (aliyun: Aliyun) => async (params: GetMetricRepor
       return collectedDimensions
     }
 
-    const insertReportArray = async (collectDimension: CollectDimension) => {
+    const insertReportArray = async (collectDimension: NeedCollectDimension) => {
       let collectedDimensions = await dealCollectDimension(collectDimension)
       for (let instanceId of collectedDimensions.keys()) {
         let report = reportArray.get(instanceId)
@@ -165,8 +173,9 @@ export const GetMetricReport = (aliyun: Aliyun) => async (params: GetMetricRepor
 
   }
 
+  let NeedCollectDimensions = params.NeedCollectDimensions || DefaultCollectDimensions
   for (let namespace in d) {
-    report[namespace] = await getReport(namespace, DefaultCollectDimensions[namespace], d[namespace])
+    report[namespace] = await getReport(namespace, NeedCollectDimensions[namespace], d[namespace])
   }
   // 这样会触发流量控制
   // await Promise.all(
