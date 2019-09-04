@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { LinearProgress, Table, TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
 import { api } from "~pages/api/client";
 import { MetricReport } from "~modules/aliyun/metric_report";
+import { GetCollectDimensions } from "~utils/getCollectDimension";
+import { GetMetricReportParams } from "~modules/aliyun/metric_report";
 
 type ReportParams = {
   GroupId: number
@@ -17,14 +19,20 @@ export const Report: React.StatelessComponent<ReportParams> = (props) => {
   let namespaces = props.Namespaces || []
 
   let [report, setReport] = useState<MetricReport>(null as any)
-  let reqParams: ReportParams = {
+  let reqParams: GetMetricReportParams = {
     GroupId: props.GroupId,
     StartTime: props.StartTime,
     EndTime: props.EndTime,
   }
   useEffect(() => {
     void async function () {
-      console.log(reqParams)
+      let collectDimensions = await GetCollectDimensions()
+      reqParams.NeedCollectDimensions = collectDimensions
+        .reduce((t, val) => {
+          let namespace = val.Name
+          t[namespace] = val.Dimensions
+          return t
+        }, {})
       let resp = await api.post<MetricReport>('/metric/report', reqParams)
       setReport(resp.data)
     }()

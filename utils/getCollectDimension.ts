@@ -17,9 +17,7 @@ export interface CollectDimension {
   Transform: (val: number) => string
 }
 
-export interface CollectDimensions {
-  [DisplayName: string]: CollectDimension
-}
+export type CollectDimensions = CollectDimension[]
 
 export const GetCollectDimensions = async (dimensionsModelUrl = GetDimensionsModelUrl()) => {
 

@@ -1,5 +1,5 @@
-define({
-  'ECS 服务器': {
+define([
+  {
     DisplayName: 'ECS 服务器',
     Name: 'acs_ecs_dashboard',
     Dimensions: [
@@ -8,7 +8,7 @@ define({
       { DisplayName: "连接数", Name: "concurrentConnections" },
     ],
   },
-  "数据库": {
+  {
     DisplayName: '数据库',
     Name: 'acs_rds_dashboard',
     Dimensions: [
@@ -17,8 +17,8 @@ define({
       { DisplayName: "连接数使用率", Name: "ConnectionUsage" },
     ],
   },
-  "Redis 标准版": {
-    DisplayName: 'Redis',
+  {
+    DisplayName: 'Redis 标准版',
     Name: 'acs_kvstore_standard',
     Dimensions: [
       { DisplayName: "CPU 使用率", Name: "CpuUsage" },
@@ -26,8 +26,8 @@ define({
       { DisplayName: "连接数使用率", Name: "ConnectionUsage" },
     ],
   },
-  "负载均衡": {
-    DisplayName: 'SLB',
+  {
+    DisplayName: '负载均衡',
     Name: 'acs_slb_dashboard',
     Dimensions: [
       { DisplayName: "流入带宽", Name: "TrafficRXNew" },
@@ -35,7 +35,7 @@ define({
       { DisplayName: "并发连接数", Name: "MaxConnection" },
     ],
   },
-  "CDN": {
+  {
     DisplayName: 'CDN',
     Name: 'acs_cdn',
     Dimensions: [
@@ -44,4 +44,4 @@ define({
       { DisplayName: "QPS", Name: "QPS" },
     ],
   },
-})
+])
