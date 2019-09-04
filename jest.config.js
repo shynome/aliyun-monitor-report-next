@@ -1,3 +1,4 @@
+require('dotenv').config()
 const TEST_REGEX = '/__tests__/.*\\.(test|spec)\\.(tsx?|ts?)$'
 
 module.exports = {
