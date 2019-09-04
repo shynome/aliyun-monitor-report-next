@@ -18,14 +18,11 @@ export const setToken = (token: string) => {
   localStorage.setItem(AuthTokenUniqueName, token)
 }
 
-export const checkToken = async (token: string): Promise<boolean> => {
-  let result = await api.get('/group/list', {
+export const checkToken = async (token: string) => {
+  await api.get('/group/list', {
     headers: {
       [AuthTokenUniqueName]: token
     }
-  }).then(
-    () => true,
-    () => false,
-  )
-  return result
+  })
+  return
 }
