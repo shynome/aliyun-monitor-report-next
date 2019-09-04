@@ -1,4 +1,4 @@
-define([
+define([], [
   {
     DisplayName: 'ECS 服务器',
     Name: 'acs_ecs_dashboard',
