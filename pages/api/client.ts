@@ -14,6 +14,9 @@ export const api = axios.create({
 
 import { AuthTokenUniqueName } from "~lib/constants";
 api.interceptors.request.use((config) => {
+  if (config.headers[AuthTokenUniqueName]) {
+    return
+  }
   let token = localStorage.getItem(AuthTokenUniqueName)
   if (token) {
     config.headers[AuthTokenUniqueName] = token
