@@ -9,11 +9,7 @@ export default micro(async (req: NextApiRequest, res: NextApiResponse) => {
 
   let params = req.body
   
-  let result = await aliyun.GetGroupResources(params).catch(
-    (err: Error) => {
-      throw createError(httpStatus.INTERNAL_SERVER_ERROR, err.message)
-    }
-  )
+  let result = await aliyun.GetGroupResources(params)
   res.json(result)
 
 })
