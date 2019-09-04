@@ -2,8 +2,17 @@ import React from "react";
 import { NextPage } from "next";
 import { CardContent, Card, CardHeader, CardActions, Button, TextField } from "@material-ui/core";
 import { useFormField } from "~utils/form";
+import { useSnackbar } from "notistack";
 if (process.browser) {
   import('./auth')
+}
+
+async function login(AccessKey: string, AccessKeySecret: string) {
+  const { setToken, encryptToken, checkToken } = await import("./auth");
+  let token = encryptToken(AccessKey, AccessKeySecret)
+  console.log(token)
+  await checkToken(token)
+  setToken(token)
 }
 
 export const Login: NextPage<{ AUTH_PUBLIC_PEM: string }> = (props) => {
@@ -11,35 +20,47 @@ export const Login: NextPage<{ AUTH_PUBLIC_PEM: string }> = (props) => {
   // @ts-ignore
   if (typeof global.AUTH_PUBLIC_PEM === 'undefined') { global.AUTH_PUBLIC_PEM = props.AUTH_PUBLIC_PEM }
 
-  let [user, handleUserChange] = useFormField('')
-  let [pass, handlePassChange] = useFormField('')
+  const { enqueueSnackbar } = useSnackbar()
+  let [AccessKey, handleAccessKeyChange] = useFormField('')
+  let [AccessKeySecret, handleAccessKeySecretChange] = useFormField('')
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const { setToken, encryptToken, checkToken } = await import("./auth");
-    console.log(encryptToken(user, pass))
+    login(AccessKey, AccessKeySecret).then(
+      () => {
+        enqueueSnackbar('登录成功, 切换首页查看报表', {
+          autoHideDuration: 2e3,
+        })
+      },
+      (err) => {
+        enqueueSnackbar('登录失败', {
+          autoHideDuration: 2e3
+        })
+        console.error(err)
+      }
+    )
   }
 
   return (
     <form action="" onSubmit={onSubmit}>
-      <Card style={{maxWidth:600, margin: '50px auto'}}>
-        <CardHeader title='设置' style={{paddingBottom:0}} />
+      <Card style={{ maxWidth: 600, margin: '50px auto' }}>
+        <CardHeader title='设置' style={{ paddingBottom: 0 }} />
         <CardContent>
           <TextField
             label={'AccessKey'}
             required
             placeholder={'AccessKey'}
             fullWidth
-            defaultValue={user}
-            onChange={handleUserChange}
+            defaultValue={AccessKey}
+            onChange={handleAccessKeyChange}
           />
           <TextField
             label={'AccessKeySecret'}
             required
             placeholder={'AccessKeySecret'}
             fullWidth
-            defaultValue={pass}
-            onChange={handlePassChange}
+            defaultValue={AccessKeySecret}
+            onChange={handleAccessKeySecretChange}
           />
         </CardContent>
         <CardActions>
