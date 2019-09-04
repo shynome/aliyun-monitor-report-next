@@ -175,7 +175,8 @@ export const GetMetricReport = (aliyun: Aliyun) => async (params: GetMetricRepor
 
   let NeedCollectDimensions = params.NeedCollectDimensions || DefaultCollectDimensions
   for (let namespace in d) {
-    report[namespace] = await getReport(namespace, NeedCollectDimensions[namespace], d[namespace])
+    let needCollectDimensions = NeedCollectDimensions[namespace] || []
+    report[namespace] = await getReport(namespace, needCollectDimensions, d[namespace])
   }
   // 这样会触发流量控制
   // await Promise.all(
