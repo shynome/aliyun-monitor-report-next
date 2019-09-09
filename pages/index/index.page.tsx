@@ -1,15 +1,14 @@
 import React from "react";
-// import { Namespaces } from "./Namespaces";
 import { Group } from "./Group";
 // import { Report } from "./Report";
+import { Container } from "@material-ui/core";
 
-export const App = ()=> {
+export const App = () => {
 
   return (
-    <div style={{maxWidth:800, margin: "0 auto"}}>
-      <Group/>
-      {/* <Namespaces/> */}
-    </div>
+    <Container maxWidth='md'>
+      <Group />
+    </Container>
   )
 }
 
