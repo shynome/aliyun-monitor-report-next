@@ -5,6 +5,7 @@ import { NextApiRequest } from "next";
 import { createError } from "micro";
 import httpStatus from "http-status";
 import crypto from 'crypto'
+import { getEnv } from "~utils/env";
 
 export const decrypt = (private_pem: string) => async (encrypted_secret: string) => {
   let buf = crypto.privateDecrypt(
@@ -16,7 +17,7 @@ export const decrypt = (private_pem: string) => async (encrypted_secret: string)
   )
   return buf.toString()
 }
-export const decryptAuthToken = decrypt(process.env['AUTH_PRIVATE_PEM'])
+export const decryptAuthToken = decrypt(getEnv('AUTH_PRIVATE_PEM'))
 
 export const NewWithReq = async (req: NextApiRequest) => {
   let token = req.headers[AuthTokenUniqueName]
