@@ -9,16 +9,13 @@ if (process.browser) {
 
 async function login(AccessKey: string, AccessKeySecret: string) {
   const { setToken, encryptToken, checkToken } = await import("./auth");
-  let token = encryptToken(AccessKey, AccessKeySecret)
+  let token = await encryptToken(AccessKey, AccessKeySecret)
   console.log(token)
   await checkToken(token)
   setToken(token)
 }
 
-export const Login: NextPage<{ AUTH_PUBLIC_PEM: string }> = (props) => {
-
-  // @ts-ignore
-  if (typeof global.AUTH_PUBLIC_PEM === 'undefined') { global.AUTH_PUBLIC_PEM = props.AUTH_PUBLIC_PEM }
+export const Login: NextPage = () => {
 
   const { enqueueSnackbar } = useSnackbar()
   let [AccessKey, handleAccessKeyChange] = useFormField('')
@@ -69,10 +66,6 @@ export const Login: NextPage<{ AUTH_PUBLIC_PEM: string }> = (props) => {
       </Card>
     </form>
   )
-}
-
-Login.getInitialProps = async () => {
-  return { AUTH_PUBLIC_PEM: process.env['AUTH_PUBLIC_PEM'] }
 }
 
 export default Login

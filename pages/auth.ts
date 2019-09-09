@@ -1,4 +1,5 @@
 import { JSEncrypt } from "jsencrypt";
+import { requirejs } from "~utils/require";
 
 export const encrypt = (secret: string, pulic_pem: string): string => {
   const sign = new JSEncrypt({})
@@ -10,7 +11,14 @@ export const encrypt = (secret: string, pulic_pem: string): string => {
   return encrypted
 }
 
-export const encryptToken = (key: string, secret: string) => encrypt([key, secret].join(','), AUTH_PUBLIC_PEM)
+let AUTH_PUBLIC_PEM = new Promise<string>((rl, rj) => {
+  requirejs(['/api/login/AUTH_PUBLIC_PEM'], (public_pem: string) => rl(public_pem), rj)
+})
+
+export const encryptToken = async (key: string, secret: string) => {
+  let auth_public_pem = await AUTH_PUBLIC_PEM
+  return encrypt([key, secret].join(','), auth_public_pem)
+}
 
 import { AuthTokenUniqueName } from "~lib/constants";
 import api from "./api/client";
