@@ -1,5 +1,5 @@
 
-import { requirejs } from "./require";
+import { requirejs } from "./require"
 
 export const DimensionsModelUrlStoreKey = 'dimensions-model-url'
 

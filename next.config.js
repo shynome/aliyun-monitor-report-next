@@ -1,32 +1,18 @@
-require('dotenv').config()
-const Dotenv = require('dotenv-webpack')
+// @ts-check
 
 const path = require('path')
+const alias = require('./tsconfig.alias').alias
 
 module.exports = {
   poweredByHeader: false,
+  pageExtensions: ["page.tsx", "api.ts"],
   webpack: (config, options) => {
 
-    config.resolve.alias['~pages'] = path.join(__dirname, 'pages')
-    config.resolve.alias['~components'] = path.join(__dirname, 'components')
-    config.resolve.alias['~utils'] = path.join(__dirname, 'utils')
-    config.resolve.alias['~static'] = path.join(__dirname, 'static')
-    config.resolve.alias['~lib'] = path.join(__dirname, 'lib')
-    config.resolve.alias['~modules'] = path.join(__dirname, 'modules')
-
-    config.plugins = config.plugins || []
-
-    config.plugins = [
-      ...config.plugins,
-
-      // Read the .env file
-      new Dotenv({
-        path: path.join(__dirname, '.env'),
-        systemvars: true
-      })
-    ]
+    for (let name in alias) {
+      let dir = alias[name]
+      config.resolve.alias[name] = path.join(__dirname, dir)
+    }
 
     return config
   },
-  pageExtensions: ["page.tsx", "api.ts"],
 }

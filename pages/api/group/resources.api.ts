@@ -1,5 +1,5 @@
 import { PageConfig, NextApiRequest, NextApiResponse } from "next";
-import *as Aliyun from "~lib/aliyun";
+import *as Aliyun from "~libs/aliyun";
 import micro, { createError } from 'micro'
 import httpStatus from 'http-status'
 

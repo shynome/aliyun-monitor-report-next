@@ -1,6 +1,6 @@
 
 import micro from 'micro'
-import { getEnv } from "~utils/env";
+import { getEnv } from "~libs/server-utils/env";
 
 let AUTH_PUBLIC_PEM = JSON.stringify(getEnv('AUTH_PUBLIC_PEM'))
 

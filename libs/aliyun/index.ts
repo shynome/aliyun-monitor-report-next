@@ -1,11 +1,11 @@
 
 import { Aliyun } from "~modules/aliyun";
-import { AuthTokenUniqueName } from "~lib/constants";
+import { AuthTokenUniqueName } from "~libs/aliyun/constants";
 import { NextApiRequest } from "next";
 import { createError } from "micro";
 import httpStatus from "http-status";
 import crypto from 'crypto'
-import { getEnv } from "~utils/env";
+import { getEnv } from "~libs/server-utils/env";
 
 export const decrypt = (private_pem: string) => async (encrypted_secret: string) => {
   let buf = crypto.privateDecrypt(

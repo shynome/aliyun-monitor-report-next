@@ -1,4 +1,4 @@
-import { decryptAuthToken } from "../aliyun";
+import { decryptAuthToken } from "../index"
 
 describe('aliyun', () => {
   it('decryptAuthToken', async () => {

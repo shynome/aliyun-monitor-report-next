@@ -12,7 +12,7 @@ export const api = axios.create({
   baseURL: '/api'
 })
 
-import { AuthTokenUniqueName } from "~lib/constants";
+import { AuthTokenUniqueName } from "~libs/aliyun/constants";
 api.interceptors.request.use((config) => {
   if (config.headers[AuthTokenUniqueName]) {
     return config

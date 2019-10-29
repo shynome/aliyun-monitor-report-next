@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "alwaysStrict": true,
-    "target": "es5",
+    "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -15,17 +15,13 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "experimentalDecorators": true,
-    "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
-      "~pages/*": ["pages/*"],
-      "~components/*": ["components/*"],
-      "~utils/*": ["utils/*"],
-      "~static/*": ["static/*"],
       "~modules/*": ["modules/*"],
-      "~lib/*": ["lib/*"]
+      "~pages/*": ["pages/*"],
+      "~libs/*": ["libs/*"]
     }
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", ".next"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

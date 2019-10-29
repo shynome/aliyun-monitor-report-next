@@ -1,6 +1,6 @@
 import { PageConfig, NextApiRequest, NextApiResponse } from "next";
 import micro from "micro";
-import *as Aliyun from "~lib/aliyun";
+import *as Aliyun from "~libs/aliyun";
 export const config: PageConfig = { api: { bodyParser: { sizeLimit: '10k' } } }
 
 export default micro(async (req: NextApiRequest, res: NextApiResponse) => {

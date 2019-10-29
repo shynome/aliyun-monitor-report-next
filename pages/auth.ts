@@ -1,5 +1,5 @@
 import { JSEncrypt } from "jsencrypt";
-import { requirejs } from "~utils/require";
+import { requirejs } from "~libs/web-utils/require";
 
 export const encrypt = (secret: string, pulic_pem: string): string => {
   const sign = new JSEncrypt({})
@@ -20,7 +20,7 @@ export const encryptToken = async (key: string, secret: string) => {
   return encrypt([key, secret].join(','), auth_public_pem)
 }
 
-import { AuthTokenUniqueName } from "~lib/constants";
+import { AuthTokenUniqueName } from "~libs/aliyun/constants";
 import api from "./api/client";
 export const setToken = (token: string) => {
   localStorage.setItem(AuthTokenUniqueName, token)

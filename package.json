@@ -32,7 +32,6 @@
     "react-dom": "^16.9.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
     "@date-io/date-fns": "^1.3.9",
     "@material-ui/core": "^4.3.3",
     "@material-ui/pickers": "^3.2.4",
@@ -41,18 +40,13 @@
     "@types/micro": "^7.3.3",
     "@types/node": "^12.7.2",
     "@types/react": "^16.9.2",
-    "babel-jest": "^24.9.0",
     "date-fns": "^2.0.1",
     "dotenv": "^8.1.0",
     "dotenv-webpack": "^1.7.0",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
     "immutability-helper": "^3.0.1",
     "jest": "^24.9.0",
     "jsencrypt": "git+https://github.com/shynome/jsencrypt.git",
     "notistack": "^0.8.9",
-    "react-addons-test-utils": "^15.6.2",
-    "react-test-renderer": "^16.9.0",
     "typescript": "^3.5.3"
   }
 }

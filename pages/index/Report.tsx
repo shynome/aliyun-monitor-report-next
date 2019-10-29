@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { LinearProgress, Table, TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
 import { api } from "~pages/api/client";
 import { MetricReport } from "~modules/aliyun/metric_report";
-import { GetCollectDimensions } from "~utils/getCollectDimension";
+import { GetCollectDimensions } from "~libs/web-utils/getCollectDimension";
 import { GetMetricReportParams } from "~modules/aliyun/metric_report";
 
 type ReportParams = {
