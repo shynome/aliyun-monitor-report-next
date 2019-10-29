@@ -21,7 +21,7 @@ export const encryptToken = async (key: string, secret: string) => {
 }
 
 import { AuthTokenUniqueName } from "~libs/aliyun/constants";
-import api from "./api/client";
+import api from "../api/client";
 export const setToken = (token: string) => {
   localStorage.setItem(AuthTokenUniqueName, token)
 }
