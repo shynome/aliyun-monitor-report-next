@@ -4,7 +4,6 @@ export interface LocalAccount {
   key?: string
   displayName: string
   token: string
-  default: boolean
 }
 
 export class LocalAccountStore {
@@ -15,11 +14,19 @@ export class LocalAccountStore {
   static readonly StorePrefixKey = 'account-index-'
   static readonly StoreIndexesKey = 'account-indexes'
   static readonly StoreOpLockKey = 'account-op-lock'
+  static readonly StoreDefaultAccountIndexKey = 'account-defualt-index'
+  static getDefaultAccount(): LocalAccount {
+    let aIndex = localStorage.getItem(LocalAccountStore.StoreDefaultAccountIndexKey)
+    return JSON.parse(localStorage.getItem(LocalAccountStore.StorePrefixKey + aIndex))
+  }
+  static setDefaultAccount(account: LocalAccount) {
+    localStorage.setItem(LocalAccountStore.StoreDefaultAccountIndexKey, account.key)
+  }
   static readonly StoreDataVersionKey = 'account-data-version'
   static getDataVersion = () => Number(localStorage.getItem(LocalAccountStore.StoreDataVersionKey) || "0")
   static updateDataVersion = () => {
     let newDataVersion = LocalAccountStore.getDataVersion() + 1
-    localStorage.getItem(LocalAccountStore.StoreDataVersionKey), newDataVersion.toString())
+    localStorage.setItem(LocalAccountStore.StoreDataVersionKey, newDataVersion.toString())
   }
   constructor() {
     this.initLock = this.init()

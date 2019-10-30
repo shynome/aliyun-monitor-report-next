@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import {
   GetGroupListParams,
   Group,
@@ -15,10 +15,21 @@ import {
   MetricReport,
 } from '~modules/aliyun/metric_report';
 
+import { LocalAccount, LocalAccountStore } from "./account";
+import { AuthTokenUniqueName } from "~libs/aliyun/constants";
+
 export class AliyunClient {
-  client = axios.create({
-    baseURL: '/api',
-  })
+  readonly client: AxiosInstance
+  constructor(
+    public readonly account: LocalAccount
+  ) {
+    this.client = axios.create({
+      baseURL: '/api',
+      headers: {
+        [AuthTokenUniqueName]: account.token,
+      }
+    })
+  }
   async GetGroupList(params: GetGroupListParams) {
     return this.client.post<Group[]>('/group/list', params)
   }
@@ -32,6 +43,6 @@ export class AliyunClient {
     return this.client.post<Datapoint[]>('/metric/top', params)
   }
   async GetMetricReport(params: GetMetricReportParams) {
-    return this.client.post<MetricReport[]>('/metric/top', params)
+    return this.client.post<MetricReport[]>('/metric/report', params)
   }
 }
