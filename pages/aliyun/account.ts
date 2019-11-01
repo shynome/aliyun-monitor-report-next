@@ -32,7 +32,7 @@ export class LocalAccountStore {
   constructor() {
     this.initLock = this.init()
   }
-  async init() {
+  init = async () => {
     this.tmpDataVersion = LocalAccountStore.getDataVersion()
     this.tmpAccountIndexes = LocalAccountStore.getAccountIndexes()
     this.tmpAccount = this.tmpAccountIndexes
@@ -50,7 +50,7 @@ export class LocalAccountStore {
       })
       .filter(v => v !== null)
   }
-  async check() {
+  check = async () => {
     await this.initLock
     let nowDataVersion = LocalAccountStore.getDataVersion()
     // 如果现在的 Indexes 和早先的 Indexes 不同, 说明用户数据发生了更新, 进行重新初始化
@@ -73,7 +73,10 @@ export class LocalAccountStore {
       return Promise.resolve(this.lock())
         .then(this.check)
         .then(() => (fn as any)(...args))
-        .then(this.unlock, this.unlock)
+        .then(this.unlock, (e) => {
+          this.unlock()
+          throw e
+        })
     }
     return f
   }
@@ -81,7 +84,7 @@ export class LocalAccountStore {
     await this.check()
     return this.tmpAccount
   }
-  private async _add(account: LocalAccount) {
+  private _add = async (account: LocalAccount) => {
     this.tmpAccount.push(account)
     let index = this.tmpAccount.length
     account.index = index.toString()
@@ -90,13 +93,13 @@ export class LocalAccountStore {
     localStorage.setItem(LocalAccountStore.StoreIndexesKey, JSON.stringify(this.tmpAccountIndexes))
     return account
   }
-  private async _remove(account: LocalAccount) {
+  private _remove = async (account: LocalAccount) => {
     let indexes = LocalAccountStore.getAccountIndexes()
     let newIndexes = indexes.filter(f => f !== account.index)
     localStorage.removeItem(LocalAccountStore.StorePrefixKey + account.index)
     localStorage.setItem(LocalAccountStore.StoreIndexesKey, JSON.stringify(newIndexes))
   }
-  private async _update(account: LocalAccount) {
+  private _update = async (account: LocalAccount) => {
     if (typeof account.index === 'undefined') {
       throw new Error("update account need index key")
     }
@@ -104,13 +107,13 @@ export class LocalAccountStore {
     localStorage.setItem(LocalAccountStore.StorePrefixKey + aIndex, JSON.stringify(account))
   }
 
-  async add(account: LocalAccount) {
+  add = async (account: LocalAccount) => {
     return this.withLock(this._add)(account)
   }
-  async remove(account: LocalAccount) {
+  remove = async (account: LocalAccount) => {
     return this.withLock(this._remove)(account)
   }
-  async update(account: LocalAccount) {
+  update = async (account: LocalAccount) => {
     return this.withLock(this._update)(account)
   }
 }
