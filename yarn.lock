@@ -1785,6 +1785,13 @@
     react-transition-group "^4.0.0"
     warning "^4.0.1"
 
+"@material-ui/icons@^4.5.1":
+  version "4.5.1"
+  resolved "https://registry.npm.taobao.org/@material-ui/icons/download/@material-ui/icons-4.5.1.tgz#6963bad139e938702ece85ca43067688018f04f8"
+  integrity sha1-aWO60TnpOHAuzoXKQwZ2iAGPBPg=
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+
 "@material-ui/pickers@^3.2.4":
   version "3.2.4"
   resolved "https://registry.npm.taobao.org/@material-ui/pickers/download/@material-ui/pickers-3.2.4.tgz#be5dfcff71120de8c3711595d773ec3f2141b736"
