@@ -1,41 +1,40 @@
 
 export interface LocalAccount {
   /**存储时的索引 */
-  index?: string
+  accessKey: string
   displayName: string
   token: string
 }
 
+export type AccountIndexes = {
+  [k: string]: 1
+}
+
 export class LocalAccountStore {
   private tmpAccount: LocalAccount[] = []
-  private tmpAccountIndexes: string[] = []
+  private tmpAccountIndexes: AccountIndexes = {}
   private tmpDataVersion: number = 0
   private initLock: Promise<any>
   static readonly StorePrefixKey = 'account-index-'
   static readonly StoreIndexesKey = 'account-indexes'
   static readonly StoreOpLockKey = 'account-op-lock'
-  static readonly StoreDefaultAccountIndexKey = 'account-defualt-index'
-  static getDefaultAccount(): LocalAccount {
-    let aIndex = localStorage.getItem(LocalAccountStore.StoreDefaultAccountIndexKey)
-    return JSON.parse(localStorage.getItem(LocalAccountStore.StorePrefixKey + aIndex))
-  }
-  static setDefaultAccount(account: LocalAccount) {
-    localStorage.setItem(LocalAccountStore.StoreDefaultAccountIndexKey, account.index)
-  }
   static readonly StoreDataVersionKey = 'account-data-version'
   static getDataVersion = () => Number(localStorage.getItem(LocalAccountStore.StoreDataVersionKey) || "0")
   static updateDataVersion = () => {
     let newDataVersion = LocalAccountStore.getDataVersion() + 1
     localStorage.setItem(LocalAccountStore.StoreDataVersionKey, newDataVersion.toString())
   }
-  static getAccountIndexes = (): string[] => JSON.parse(localStorage.getItem(LocalAccountStore.StoreIndexesKey) || '[]')
+  static getAccountIndexes = (): AccountIndexes => JSON.parse(localStorage.getItem(LocalAccountStore.StoreIndexesKey) || '{}')
+  static setAccountIndexes = (v: AccountIndexes) => {
+    localStorage.setItem(LocalAccountStore.StoreIndexesKey, JSON.stringify(v))
+  }
   constructor() {
     this.initLock = this.init()
   }
   init = async () => {
     this.tmpDataVersion = LocalAccountStore.getDataVersion()
     this.tmpAccountIndexes = LocalAccountStore.getAccountIndexes()
-    this.tmpAccount = this.tmpAccountIndexes
+    this.tmpAccount = Object.keys(this.tmpAccountIndexes)
       .map(index => LocalAccountStore.StorePrefixKey + index)
       .map(k => {
         try {
@@ -53,7 +52,7 @@ export class LocalAccountStore {
   check = async () => {
     await this.initLock
     let nowDataVersion = LocalAccountStore.getDataVersion()
-    // 如果现在的 Indexes 和早先的 Indexes 不同, 说明用户数据发生了更新, 进行重新初始化
+    // 如果现在的 DataVersion 和早先的 DataVersion 不同, 说明用户数据发生了更新, 进行重新初始化
     if (nowDataVersion !== this.tmpDataVersion) {
       await (this.initLock = this.init())
     }
@@ -85,26 +84,25 @@ export class LocalAccountStore {
     return this.tmpAccount
   }
   private _add = async (account: LocalAccount) => {
-    this.tmpAccount.push(account)
-    let index = this.tmpAccount.length
-    account.index = index.toString()
-    this.tmpAccountIndexes.push(account.index)
-    localStorage.setItem(LocalAccountStore.StorePrefixKey + index, JSON.stringify(account))
-    localStorage.setItem(LocalAccountStore.StoreIndexesKey, JSON.stringify(this.tmpAccountIndexes))
-    return account
+
+    let indexes = LocalAccountStore.getAccountIndexes()
+    indexes[account.accessKey] = 1
+
+    LocalAccountStore.setAccountIndexes(indexes)
+    localStorage.setItem(LocalAccountStore.StorePrefixKey + account.accessKey, JSON.stringify(account))
+
   }
   private _remove = async (account: LocalAccount) => {
+
     let indexes = LocalAccountStore.getAccountIndexes()
-    let newIndexes = indexes.filter(f => f !== account.index)
-    localStorage.removeItem(LocalAccountStore.StorePrefixKey + account.index)
-    localStorage.setItem(LocalAccountStore.StoreIndexesKey, JSON.stringify(newIndexes))
+    delete indexes[account.accessKey]
+    LocalAccountStore.setAccountIndexes(indexes)
+
+    localStorage.removeItem(LocalAccountStore.StorePrefixKey + account.accessKey)
+
   }
   private _update = async (account: LocalAccount) => {
-    if (typeof account.index === 'undefined') {
-      throw new Error("update account need index key")
-    }
-    let aIndex = account.index
-    localStorage.setItem(LocalAccountStore.StorePrefixKey + aIndex, JSON.stringify(account))
+    localStorage.setItem(LocalAccountStore.StorePrefixKey + account.accessKey, JSON.stringify(account))
   }
 
   add = async (account: LocalAccount) => {
