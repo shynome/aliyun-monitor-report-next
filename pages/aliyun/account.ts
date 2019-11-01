@@ -86,6 +86,11 @@ export class LocalAccountStore {
   private _add = async (account: LocalAccount) => {
 
     let indexes = LocalAccountStore.getAccountIndexes()
+
+    if (indexes[account.accessKey]) {
+      throw new Error('该用户已存在')
+    }
+
     indexes[account.accessKey] = 1
 
     LocalAccountStore.setAccountIndexes(indexes)
