@@ -37,7 +37,7 @@ export const AccountList: React.StatelessComponent = () => {
       <List>
         {accountList.map((account, index) => (
           <ListItem key={account.accessKey} divider={index !== (accountList.length - 1)} >
-            <ListItemText>{account.displayName}</ListItemText>
+            <ListItemText primary={account.displayName} secondary={account.accessKey} />
             <ListItemSecondaryAction>
               <IconButton>
                 <EditIcon />
