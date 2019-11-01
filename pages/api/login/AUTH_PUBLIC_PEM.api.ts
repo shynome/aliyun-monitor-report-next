@@ -2,8 +2,8 @@
 import micro from 'micro'
 import { getEnv } from "~libs/server-utils/env";
 
-let AUTH_PUBLIC_PEM = JSON.stringify(getEnv('AUTH_PUBLIC_PEM'))
+let AUTH_PUBLIC_PEM = getEnv('AUTH_PUBLIC_PEM')
 
 export default micro((req, res) => {
-  res.end(`define([],${AUTH_PUBLIC_PEM})`)
+  res.end(AUTH_PUBLIC_PEM)
 })
