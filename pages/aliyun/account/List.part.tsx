@@ -34,8 +34,8 @@ export const AccountList: React.StatelessComponent = () => {
   return (
     <Fragment>
       <List>
-        {accountList.map((account) => (
-          <ListItem key={account.index} divider={true}>
+        {accountList.map((account, index) => (
+          <ListItem key={account.index} divider={index !== (accountList.length - 1)} >
             <ListItemText>{account.displayName}</ListItemText>
             <ListItemSecondaryAction>
               <IconButton>
