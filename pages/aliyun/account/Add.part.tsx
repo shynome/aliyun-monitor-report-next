@@ -2,8 +2,9 @@ import {
   makeStyles,
   TextField, Button, useTheme,
 } from "@material-ui/core";
-import { localAccountStore } from "../account";
 import { useFormField } from "~libs/web-utils/form";
+import { localAccountStoreContainer } from "./useLocalAccountStore";
+import { TabSelectStatusContainer, AccountPanelType } from "./TabSelectStatus";
 
 const useStyles = makeStyles(theme => ({
   input: {
@@ -17,6 +18,8 @@ const useStyles = makeStyles(theme => ({
 export const AccountAdd: React.StatelessComponent = () => {
 
   const styles = useStyles(useTheme())
+  const { accountManager } = localAccountStoreContainer.useContainer()
+  const { setSelectedTab } = TabSelectStatusContainer.useContainer()
 
   const [uniqueName, setUniqueName] = useFormField('')
   const [AccessKey, setAccessKey] = useFormField('')
@@ -24,11 +27,11 @@ export const AccountAdd: React.StatelessComponent = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    let a = await localAccountStore.add({
+    accountManager.add({
       displayName: uniqueName,
       token: AccessKey + ':' + AccessKeySecret,
     })
-    console.log(a)
+    setSelectedTab(AccountPanelType.List)
   }
 
   return (

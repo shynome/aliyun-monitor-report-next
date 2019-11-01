@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { LocalAccountStore } from "../account";
+import React, { useEffect } from "react";
 import {
   AppBar, Tabs, Tab, Paper,
   makeStyles,
@@ -7,11 +6,7 @@ import {
 import { TabPanel } from "~modules/components/TabPanel";
 import { AccountAdd } from "./Add.part";
 import { AccountList } from "./List.part";
-
-export enum AccountPanelType {
-  List = 'list',
-  Add = 'add',
-}
+import { localAccountStoreContainer } from "./useLocalAccountStore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,31 +16,44 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+import { TabSelectStatusContainer, AccountPanelType } from "./TabSelectStatus";
+
 export const AccountPanel: React.StatelessComponent = () => {
 
   const styles = useStyles({})
-  const [selected, setSelected] = useState<AccountPanelType>(LocalAccountStore.getDefaultAccount() ? AccountPanelType.List : AccountPanelType.Add)
+  const { selectedTab, setSelectedTab } = TabSelectStatusContainer.useContainer()
+  const { accountManager } = localAccountStoreContainer.useContainer()
+
+  useEffect(() => {
+    accountManager.update()
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<{}>, newValue: AccountPanelType) => {
-    setSelected(newValue)
+    setSelectedTab(newValue)
   }
 
   return (
     <Paper className={`${styles.root}`}>
       <AppBar position='static'>
-        <Tabs value={selected} onChange={handleChange} variant='fullWidth'>
+        <Tabs value={selectedTab} onChange={handleChange} variant='fullWidth'>
           <Tab value={AccountPanelType.List} label='帐号列表' />
           <Tab value={AccountPanelType.Add} label='新增帐号' />
         </Tabs>
       </AppBar>
-      <TabPanel value={selected} index={AccountPanelType.List}>
+      <TabPanel value={selectedTab} index={AccountPanelType.List}>
         <AccountList />
       </TabPanel>
-      <TabPanel value={selected} index={AccountPanelType.Add}>
+      <TabPanel value={selectedTab} index={AccountPanelType.Add}>
         <AccountAdd />
       </TabPanel>
     </Paper>
   )
 }
 
-export default AccountPanel
+export default () => (
+  <localAccountStoreContainer.Provider>
+    <TabSelectStatusContainer.Provider>
+      <AccountPanel />
+    </TabSelectStatusContainer.Provider>
+  </localAccountStoreContainer.Provider>
+)
