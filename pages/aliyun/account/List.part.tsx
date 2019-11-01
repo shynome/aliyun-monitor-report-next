@@ -8,9 +8,11 @@ import EditIcon from "@material-ui/icons/Edit";
 import { localAccountStoreContainer } from "./useLocalAccountStore";
 import { AccountPanelType, TabSelectStatusContainer } from "./TabSelectStatus";
 
-import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog.c";
+import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog.c"
 
-enum DeleteAccountStatus {
+import { UpdateAccountDialog } from "./UpdateAccountDialog.c";
+
+enum OpAccountStatus {
   Pending,
   Finished,
 }
@@ -20,23 +22,37 @@ export const AccountList: React.StatelessComponent = () => {
   const { accountList, accountManager } = localAccountStoreContainer.useContainer()
   const [tmpDeleteAccount, setTmpDeleteAccount] = useState<LocalAccount>(null)
   const [tmpEditAccount, setTmpEditAccount] = useState<LocalAccount>(null)
-  const [deleteAccountStatus, setDeleteAccountStatus] = useState<DeleteAccountStatus>(DeleteAccountStatus.Finished)
+  const [opAccountStatus, setOpAccountStatus] = useState<OpAccountStatus>(OpAccountStatus.Finished)
 
   const { setSelectedTab } = TabSelectStatusContainer.useContainer()
 
-  const [startDeleteAccount, endDeleteAccount] = [() => setDeleteAccountStatus(DeleteAccountStatus.Pending), () => setDeleteAccountStatus(DeleteAccountStatus.Finished),]
+  const [startOpAccount, endOpAccount] = [() => setOpAccountStatus(OpAccountStatus.Pending), () => setOpAccountStatus(OpAccountStatus.Finished),]
 
   const _handleDeleteConfirm = async (confirm: boolean) => {
     if (!confirm) {
       return
     }
-    startDeleteAccount()
+    startOpAccount()
     await accountManager.remove(tmpDeleteAccount)
   }
   const handleDeleteConfirm = (confirm: boolean) => {
     _handleDeleteConfirm(confirm).finally(() => {
       setTmpDeleteAccount(null)
-      endDeleteAccount()
+      endOpAccount()
+    })
+  }
+
+  const _handleUpdateAccountConfirm = async (confirm: boolean) => {
+    if (!confirm) {
+      return
+    }
+    startOpAccount()
+    await accountManager.remove(tmpDeleteAccount)
+  }
+  const handleUpdateAccountConfirm = (confirm: boolean) => {
+    _handleUpdateAccountConfirm(confirm).finally(() => {
+      setTmpDeleteAccount(null)
+      endOpAccount()
     })
   }
 
@@ -66,7 +82,12 @@ export const AccountList: React.StatelessComponent = () => {
       <ConfirmDeleteDialog
         account={tmpDeleteAccount}
         onConfirm={handleDeleteConfirm}
-        pending={deleteAccountStatus === DeleteAccountStatus.Pending}
+        pending={opAccountStatus === OpAccountStatus.Pending}
+      />
+      <UpdateAccountDialog
+        account={tmpEditAccount}
+        onConfirm={handleUpdateAccountConfirm}
+        pending={opAccountStatus === OpAccountStatus.Pending}
       />
     </Fragment>
   )

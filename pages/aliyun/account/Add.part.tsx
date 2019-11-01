@@ -33,6 +33,10 @@ export const AccountAdd: React.StatelessComponent = () => {
       token: AccessKey + ':' + AccessKeySecret,
     })
     setSelectedTab(AccountPanelType.List)
+    // reset
+    let v = { target: { value: '' } }
+    // @ts-ignore
+    setUniqueName(v); setAccessKey(v); setAccessKeySecret(v)
   }
 
   return (
@@ -42,6 +46,7 @@ export const AccountAdd: React.StatelessComponent = () => {
         className={`${styles.input}`}
         required
         onChange={setUniqueName}
+        value={uniqueName}
         fullWidth
       />
       <TextField
@@ -49,6 +54,7 @@ export const AccountAdd: React.StatelessComponent = () => {
         className={`${styles.input}`}
         required
         onChange={setAccessKey}
+        value={AccessKey}
         fullWidth
       />
       <TextField
@@ -56,6 +62,7 @@ export const AccountAdd: React.StatelessComponent = () => {
         className={`${styles.input}`}
         required
         onChange={setAccessKeySecret}
+        value={AccessKeySecret}
         fullWidth
       />
       <Button className={styles.submit} type='submit' fullWidth size='large' variant='contained' color='primary'>
