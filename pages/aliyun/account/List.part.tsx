@@ -3,7 +3,7 @@ import {
   List, ListItem, ListItemText, IconButton, ListItemSecondaryAction, Button,
   Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
 } from "@material-ui/core";
-import { localAccountStore, LocalAccount } from "../account";
+import { LocalAccount } from "../account";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { localAccountStoreContainer } from "./useLocalAccountStore";
@@ -39,12 +39,15 @@ export const AccountList: React.StatelessComponent = () => {
           <ListItem key={account.accessKey} divider={index !== (accountList.length - 1)} >
             <ListItemText primary={account.displayName} secondary={account.accessKey} />
             <ListItemSecondaryAction>
-              <IconButton>
-                <EditIcon />
-              </IconButton>
               <IconButton onClick={() => setTmpDeleteAccount(account)}>
                 <DeleteIcon />
               </IconButton>
+              <IconButton>
+                <EditIcon />
+              </IconButton>
+              <Button onClick={() => alert('未实现')} color='primary' variant='outlined'>
+                进入该帐号
+              </Button>
             </ListItemSecondaryAction>
           </ListItem>
         ))}
