@@ -8,7 +8,8 @@ export enum AccountPanelType {
 }
 
 export const useTabSelectStatus = () => {
-  const [selectedTab, setSelectedTab] = useState<AccountPanelType>(LocalAccountStore.getDefaultAccount() ? AccountPanelType.List : AccountPanelType.Add)
+  const AccountLength = Object.keys(LocalAccountStore.getAccountIndexes()).length
+  const [selectedTab, setSelectedTab] = useState<AccountPanelType>(AccountLength ? AccountPanelType.List : AccountPanelType.Add)
   return {
     selectedTab,
     setSelectedTab,

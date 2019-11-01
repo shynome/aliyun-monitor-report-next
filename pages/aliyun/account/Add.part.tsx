@@ -27,8 +27,9 @@ export const AccountAdd: React.StatelessComponent = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    accountManager.add({
+    await accountManager.add({
       displayName: uniqueName,
+      accessKey: AccessKey,
       token: AccessKey + ':' + AccessKeySecret,
     })
     setSelectedTab(AccountPanelType.List)

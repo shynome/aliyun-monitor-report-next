@@ -18,6 +18,7 @@ export const AccountList: React.StatelessComponent = () => {
 
   const { accountList, accountManager } = localAccountStoreContainer.useContainer()
   const [tmpDeleteAccount, setTmpDeleteAccount] = useState<LocalAccount>(null)
+  const [tmpEditAccount, setTmpEditAccount] = useState<LocalAccount>(null)
   const [deleteAccountStatus, setDeleteAccountStatus] = useState<DeleteAccountStatus>(DeleteAccountStatus.Finished)
 
   const { setSelectedTab } = TabSelectStatusContainer.useContainer()
@@ -35,7 +36,7 @@ export const AccountList: React.StatelessComponent = () => {
     <Fragment>
       <List>
         {accountList.map((account, index) => (
-          <ListItem key={account.index} divider={index !== (accountList.length - 1)} >
+          <ListItem key={account.accessKey} divider={index !== (accountList.length - 1)} >
             <ListItemText>{account.displayName}</ListItemText>
             <ListItemSecondaryAction>
               <IconButton>

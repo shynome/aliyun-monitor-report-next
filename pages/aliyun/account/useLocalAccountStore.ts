@@ -24,8 +24,6 @@ export const useLocalAccountStore = () => {
 
   const [accountList, setAccountList] = useState<LocalAccount[]>([])
 
-  console.log(accountList)
-
   return {
     accountList,
     accountManager: new AccountManager(setAccountList),
