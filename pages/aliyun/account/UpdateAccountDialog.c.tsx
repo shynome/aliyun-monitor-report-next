@@ -19,9 +19,9 @@ export const UpdateAccountDialog: React.StatelessComponent<{ account: LocalAccou
   const styles = useStyles(useTheme())
 
   const hasConfirmUpdateAccount = account !== null
-  let _account = { ...account }
+  let _account: LocalAccount = { ...account }
   const [tmpAccount, setTmpAccount] = useState(_account)
-  useEffect(() => { setTmpAccount(_account) }, [JSON.stringify(_account)])
+  useEffect(() => { setTmpAccount(_account) }, [_account.accessKey])
 
   const saveFormField = (t: keyof LocalAccount) => (e: any) => {
     setTmpAccount({
