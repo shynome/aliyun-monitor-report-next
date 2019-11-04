@@ -25,7 +25,7 @@ export const AccountPanel: React.StatelessComponent = () => {
   const { accountManager } = localAccountStoreContainer.useContainer()
 
   useEffect(() => {
-    accountManager.update()
+    accountManager.updateState()
   }, [])
 
   const handleChange = (e: React.ChangeEvent<{}>, newValue: AccountPanelType) => {

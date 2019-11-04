@@ -6,21 +6,21 @@ export class AccountManager {
   constructor(
     readonly setAccountList: (accountList: LocalAccount[]) => any,
   ) { }
-  private __update = async () => {
+  updateState = async () => {
     let accountList = await localAccountStore.list()
     this.setAccountList(accountList)
   }
   update = async (account: LocalAccount) => {
     await localAccountStore.update(account)
-    await this.__update()
+    await this.updateState()
   }
   add = async (account: LocalAccount) => {
     await localAccountStore.add(account)
-    await this.__update()
+    await this.updateState()
   }
   remove = async (account: LocalAccount) => {
     await localAccountStore.remove(account)
-    await this.__update()
+    await this.updateState()
   }
 }
 
