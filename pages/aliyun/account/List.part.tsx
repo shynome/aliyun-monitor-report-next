@@ -42,16 +42,16 @@ export const AccountList: React.StatelessComponent = () => {
     })
   }
 
-  const _handleUpdateAccountConfirm = async (confirm: boolean) => {
+  const _handleUpdateAccountConfirm = async (confirm: boolean, account?: LocalAccount) => {
     if (!confirm) {
       return
     }
     startOpAccount()
-    await accountManager.remove(tmpDeleteAccount)
+    await accountManager.update(account)
   }
-  const handleUpdateAccountConfirm = (confirm: boolean) => {
-    _handleUpdateAccountConfirm(confirm).finally(() => {
-      setTmpDeleteAccount(null)
+  const handleUpdateAccountConfirm = (confirm: boolean, account?: LocalAccount) => {
+    _handleUpdateAccountConfirm(confirm, account).finally(() => {
+      setTmpEditAccount(null)
       endOpAccount()
     })
   }
@@ -66,7 +66,7 @@ export const AccountList: React.StatelessComponent = () => {
               <IconButton onClick={() => setTmpDeleteAccount(account)}>
                 <DeleteIcon />
               </IconButton>
-              <IconButton>
+              <IconButton onClick={() => setTmpEditAccount(account)}>
                 <EditIcon />
               </IconButton>
               <Button onClick={() => alert('未实现')} color='primary' variant='outlined'>
