@@ -1,7 +1,6 @@
-import { JSEncrypt } from "jsencrypt";
-import { requirejs } from "~libs/web-utils/require";
 
-export const encrypt = (secret: string, pulic_pem: string): string => {
+export const encrypt = async (secret: string, pulic_pem: string): Promise<string> => {
+  const { JSEncrypt } = await import("jsencrypt");
   const sign = new JSEncrypt({})
   sign.setPublicKey(pulic_pem)
   let encrypted = sign.encrypt(secret)
