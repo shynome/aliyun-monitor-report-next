@@ -6,7 +6,7 @@ import { useFormField } from "~libs/web-utils/form";
 import { localAccountStoreContainer } from "./useLocalAccountStore";
 import { TabSelectStatusContainer, AccountPanelType } from "./TabSelectStatus";
 
-const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles(theme => ({
   input: {
     marginBottom: '10px',
   },
