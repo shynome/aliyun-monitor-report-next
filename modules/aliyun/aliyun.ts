@@ -9,6 +9,7 @@ import {
   GetMetricTop, GetMetricTopParams,
 } from "./metric";
 import { GetMetricReport, GetMetricReportParams } from "./metric_report";
+import { getEnv } from "~libs/server-utils/env";
 
 export interface CommonParams {
   RegionID?: string
@@ -41,7 +42,7 @@ export class Aliyun {
 
   static required_env = ['AccessKey', 'AccessKeySecret']
   static NewWithEnv() {
-    let [key, secret] = this.required_env.map(k => process.env[k])
+    let [key, secret] = this.required_env.map(k => getEnv(k))
     if (!key || !secret) {
       throw new Error('required_env: ' + this.required_env.join(','))
     }
