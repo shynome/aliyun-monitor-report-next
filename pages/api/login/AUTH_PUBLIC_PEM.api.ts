@@ -1,9 +1,7 @@
 
 import micro from 'micro'
-import { getEnv } from "~libs/server-utils/env";
-
-let AUTH_PUBLIC_PEM = getEnv('AUTH_PUBLIC_PEM')
+import *as BrowserEncrypt from "~libs/config/browser-encrypt";
 
 export default micro((req, res) => {
-  res.end(AUTH_PUBLIC_PEM)
+  res.end(BrowserEncrypt.AUTH_PUBLIC_PEM)
 })
