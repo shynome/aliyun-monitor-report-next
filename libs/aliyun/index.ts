@@ -28,7 +28,7 @@ export const NewWithReq = async (req: NextApiRequest) => {
     throw createError(httpStatus.BAD_REQUEST, `can't parse token, maybe client public pem and server pem maybe not a pair `)
   })
   let [AccessKey, AccessKeySecret] = decryptStr.split(',')
-  if (typeof AccessKeySecret !== 'string') {
+  if (typeof AccessKeySecret !== 'string' || typeof AccessKey !== 'string') {
     throw createError(httpStatus.BAD_REQUEST, 'the encrypt format is wrong, should be `${AccessKey},${AccessKeySecret}`')
   }
   return new Aliyun(AccessKey, AccessKeySecret)
