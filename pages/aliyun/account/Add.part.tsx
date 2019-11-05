@@ -7,7 +7,7 @@ import { useFormFields } from "~libs/web-utils/form";
 import { localAccountStoreContainer } from "./useLocalAccountStore";
 import { TabSelectStatusContainer, AccountPanelType } from "./TabSelectStatus";
 import { useSnackbar } from "notistack";
-import qs from "querystring";
+import { Fragment } from "react";
 
 export const useStyles = makeStyles(theme => ({
   input: {
@@ -104,8 +104,14 @@ export const AccountAdd: React.StatelessComponent = () => {
       />
       <Button disabled={postStatus.pending} className={styles.submit} type='submit' fullWidth size='large' variant='contained' color='primary'>
         {postStatus.pending
-          ? ['验证帐号中', <CircularProgress size='1rem' style={{ marginLeft: '1rem' }} />]
-          : '添加新帐号'}
+          ? (
+            <Fragment>
+              验证帐号中
+            <CircularProgress size='1rem' style={{ marginLeft: '1rem' }} />
+            </Fragment>
+          )
+          : '添加新帐号'
+        }
       </Button>
     </form>
   )
