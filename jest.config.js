@@ -1,5 +1,7 @@
 // @ts-check
 
+require('dotenv').config()
+
 const alias = require('./tsconfig.alias').alias
 /**@type {{[k:string]:string}} */
 let moduleNameMapper = {}
