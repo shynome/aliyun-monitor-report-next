@@ -52,8 +52,10 @@ export const AccountAdd: React.StatelessComponent = () => {
     setSelectedTab(AccountPanelType.List)
     // reset
     let v = { target: { value: '' } }
-    // @ts-ignore
-    setUniqueName(v); setAccessKey(v); setAccessKeySecret(v)
+    Object.keys(form).map(k => {
+      // @ts-ignore
+      return saveFormField(k)
+    }).forEach(f => f(v))
   }
 
   const handleSubmit = (e: React.FormEvent) => {
