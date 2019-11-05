@@ -6748,10 +6748,10 @@ normalize-url@^3.3.0:
   resolved "https://registry.npm.taobao.org/normalize-url/download/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha1-suHE3E98bVd0PfczpPWXjRhlBVk=
 
-notistack@^0.8.9:
-  version "0.8.9"
-  resolved "https://registry.npm.taobao.org/notistack/download/notistack-0.8.9.tgz#8c6211a9260f4f1b41b0ebdc8dc43d7bcbf35b97"
-  integrity sha1-jGIRqSYPTxtBsOvcjcQ9e8vzW5c=
+notistack@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.npm.taobao.org/notistack/download/notistack-0.9.5.tgz#3294e8438055ea5a39a8a4428240b05c548bb5b2"
+  integrity sha1-MpToQ4BV6lo5qKRCgkCwXFSLtbI=
   dependencies:
     classnames "^2.2.6"
     hoist-non-react-statics "^3.3.0"
