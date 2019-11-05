@@ -1,5 +1,7 @@
 // @ts-check
 
+require('dotenv').config()
+
 const path = require('path')
 const alias = require('./tsconfig.alias').alias
 
