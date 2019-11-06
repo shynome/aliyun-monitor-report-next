@@ -24,6 +24,17 @@ export class LocalAccountStore {
     let newDataVersion = LocalAccountStore.getDataVersion() + 1
     localStorage.setItem(LocalAccountStore.StoreDataVersionKey, newDataVersion.toString())
   }
+  static getAccount = (accessKey: string): LocalAccount | null => {
+    let t: LocalAccount
+    try {
+      let a = localStorage.getItem(LocalAccountStore.StorePrefixKey + accessKey)
+      t = JSON.parse(a)
+      return t
+    } catch (err) {
+      console.error(err)
+      return null
+    }
+  }
   static getAccountIndexes = (): AccountIndexes => JSON.parse(localStorage.getItem(LocalAccountStore.StoreIndexesKey) || '{}')
   static setAccountIndexes = (v: AccountIndexes) => {
     localStorage.setItem(LocalAccountStore.StoreIndexesKey, JSON.stringify(v))
