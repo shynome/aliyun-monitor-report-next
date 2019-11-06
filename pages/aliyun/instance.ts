@@ -13,12 +13,18 @@ export const useAliyunInstance = () => {
 
 export const AliyunInstanceContainer = createContainer(useAliyunInstance)
 
-import { useRouter } from "next/router";
+import { useRouter, NextRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import qs from "querystring";
 
 export interface AliyunInstanceSetStatus {
   pending: boolean
+}
+
+export const GenGotoReport = (router: NextRouter) => (account: LocalAccount) => {
+  router.push('/aliyun/report?' + qs.stringify({
+    id: account.accessKey
+  }))
 }
 
 export const useAliyunInstanceSet = () => {
@@ -34,11 +40,7 @@ export const useAliyunInstanceSet = () => {
     setStatus({ pending: false })
     router.push('/aliyun/account')
   }
-  const gotoReport = (account: LocalAccount) => {
-    router.push('/aliyun/report?' + qs.stringify({
-      id: account.accessKey
-    }))
-  }
+  const gotoReport = GenGotoReport(router)
 
   useEffect(() => {
     let id = router.query.id as string

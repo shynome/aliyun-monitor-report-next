@@ -7,6 +7,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { localAccountStoreContainer } from "./useLocalAccountStore";
 import { AccountPanelType, TabSelectStatusContainer } from "./TabSelectStatus";
+import { useRouter } from "next/router";
+import { GenGotoReport } from "../instance";
 
 import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog.c"
 
@@ -19,6 +21,8 @@ enum OpAccountStatus {
 
 export const AccountList: React.StatelessComponent = () => {
 
+  const router = useRouter()
+  const gotoReport = GenGotoReport(router)
   const { accountList, accountManager } = localAccountStoreContainer.useContainer()
   const [tmpDeleteAccount, setTmpDeleteAccount] = useState<LocalAccount>(null)
   const [tmpEditAccount, setTmpEditAccount] = useState<LocalAccount>(null)
@@ -69,7 +73,7 @@ export const AccountList: React.StatelessComponent = () => {
               <IconButton onClick={() => setTmpEditAccount(account)}>
                 <EditIcon />
               </IconButton>
-              <Button onClick={() => alert('未实现')} color='primary' variant='outlined'>
+              <Button onClick={() => gotoReport(account)} color='primary' variant='outlined'>
                 进入该帐号
               </Button>
             </ListItemSecondaryAction>
