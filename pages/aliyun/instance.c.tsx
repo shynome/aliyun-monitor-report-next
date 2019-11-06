@@ -6,11 +6,14 @@ import { useRouter } from "next/router";
 
 export const AliyunInstanceCheck: React.StatelessComponent = (props) => {
 
-  const { aliyun } = AliyunInstanceContainer.useContainer()
+  const { aliyun, pending } = AliyunInstanceContainer.useContainer()
   const router = useRouter()
-  const pending = useAliyunInstanceSet()
+  useAliyunInstanceSet(router.asPath)
 
   useEffect(() => {
+    if (pending) {
+      return
+    }
     if (aliyun) {
       return
     }

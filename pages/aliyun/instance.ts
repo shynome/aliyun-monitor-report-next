@@ -31,8 +31,9 @@ export const GenGotoReport = (router: NextRouter) => (account: LocalAccount) => 
   }))
 }
 
-export const useAliyunInstanceSet = () => {
+export const useAliyunInstanceSet = (p: string) => {
 
+  let query = qs.parse(p.split('?')[1] || '')
   const router = useRouter()
   const { pending, setAliyunInstance, aliyun } = AliyunInstanceContainer.useContainer()
   const { enqueueSnackbar } = useSnackbar()
@@ -48,7 +49,6 @@ export const useAliyunInstanceSet = () => {
       return
     }
 
-    let query = qs.parse(router.asPath.split('?')[1] || '')
     let id = query.id as string
     console.log(id)
     if (typeof id !== 'string') {
@@ -71,7 +71,7 @@ export const useAliyunInstanceSet = () => {
         enqueueSnackbar('token 登录失败, 请重新添加该帐号', { autoHideDuration: 2e3 })
       }
     )
-  }, [router.asPath, aliyun])
+  }, [query.id, aliyun])
 
   return pending
 }
