@@ -3,10 +3,18 @@ import { createContainer } from "unstated-next";
 import { LocalAccountStore, LocalAccount } from "./account";
 import { AliyunClient } from "./client";
 
+export interface AliyunInstanceState {
+  aliyun: AliyunClient,
+  pending: boolean
+}
+
 export const useAliyunInstance = () => {
-  const [aliyun, setAliyunInstance] = useState<AliyunClient>(null)
+  const [state, setAliyunInstance] = useState<AliyunInstanceState>({
+    aliyun: null,
+    pending: false
+  })
   return {
-    aliyun,
+    ...state,
     setAliyunInstance,
   }
 }
@@ -17,10 +25,6 @@ import { useRouter, NextRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import qs from "querystring";
 
-export interface AliyunInstanceSetStatus {
-  pending: boolean
-}
-
 export const GenGotoReport = (router: NextRouter) => (account: LocalAccount) => {
   router.push('/aliyun/report?' + qs.stringify({
     id: account.accessKey
@@ -30,42 +34,44 @@ export const GenGotoReport = (router: NextRouter) => (account: LocalAccount) => 
 export const useAliyunInstanceSet = () => {
 
   const router = useRouter()
-  const { setAliyunInstance } = AliyunInstanceContainer.useContainer()
-  const [status, setStatus] = useState<AliyunInstanceSetStatus>({
-    pending: true,
-  })
+  const { pending, setAliyunInstance, aliyun } = AliyunInstanceContainer.useContainer()
   const { enqueueSnackbar } = useSnackbar()
 
-  const gotoLogin = () => {
-    setStatus({ pending: false })
-    router.push('/aliyun/account')
+  const setNeddLoginState = () => {
+    setAliyunInstance({ pending: false, aliyun: null })
   }
   const gotoReport = GenGotoReport(router)
 
   useEffect(() => {
-    let id = router.query.id as string
+
+    if (aliyun) {
+      return
+    }
+
+    let query = qs.parse(router.asPath.split('?')[1] || '')
+    let id = query.id as string
+    console.log(id)
     if (typeof id !== 'string') {
-      gotoLogin()
+      setNeddLoginState()
       return
     }
     let account = LocalAccountStore.getAccount(id)
     if (!account) {
-      gotoLogin()
+      setNeddLoginState()
       return
     }
-    const aliyun = new AliyunClient(account)
-    aliyun.GetGroupList({}).then(
+    const _aliyun = new AliyunClient(account)
+    _aliyun.GetGroupList({}).then(
       () => {
-        setStatus({ pending: false })
-        setAliyunInstance(aliyun)
+        setAliyunInstance({ pending: false, aliyun: _aliyun })
         gotoReport(account)
       },
       (err) => {
-        gotoLogin()
+        setNeddLoginState()
         enqueueSnackbar('token 登录失败, 请重新添加该帐号', { autoHideDuration: 2e3 })
       }
     )
-  }, [])
+  }, [router.asPath, aliyun])
 
-  return status
+  return pending
 }
