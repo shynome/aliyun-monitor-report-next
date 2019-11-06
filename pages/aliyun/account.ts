@@ -29,6 +29,9 @@ export class LocalAccountStore {
     localStorage.setItem(LocalAccountStore.StoreIndexesKey, JSON.stringify(v))
   }
   constructor() {
+    if (!process.browser) {
+      return
+    }
     this.initLock = this.init()
   }
   init = async () => {
