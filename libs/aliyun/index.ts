@@ -22,7 +22,7 @@ export const decryptAuthToken = decrypt(getEnv('AUTH_PRIVATE_PEM'))
 export const NewWithReq = async (req: NextApiRequest) => {
   let token = req.headers[AuthTokenUniqueName]
   if (typeof token !== 'string' || token.length === 0) {
-    throw createError(httpStatus.UNAUTHORIZED, 'need cookie token for auth')
+    throw createError(httpStatus.UNAUTHORIZED, 'need header token field for auth')
   }
   let decryptStr = await decryptAuthToken(token).catch(err => {
     throw createError(httpStatus.BAD_REQUEST, `can't parse token, maybe client public pem and server pem maybe not a pair `)
