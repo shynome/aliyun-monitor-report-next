@@ -5709,9 +5709,10 @@ jsdom@^11.5.1:
     ws "^5.2.0"
     xml-name-validator "^3.0.0"
 
-"jsencrypt@git+https://github.com/shynome/jsencrypt.git":
+"jsencrypt@npm:@shynome/jsencrypt":
   version "3.0.0-rc.1"
-  resolved "git+https://github.com/shynome/jsencrypt.git#940208a6e7dc9f56ea4ff1b41b283dae1c855158"
+  resolved "https://registry.npm.taobao.org/@shynome/jsencrypt/download/@shynome/jsencrypt-3.0.0-rc.1.tgz#01aca77f8fc90facbecb77a0a2db3f7cac3f5f06"
+  integrity sha1-Aaynf4/JD6y+y3egots/fKw/XwY=
 
 jsesc@^2.5.1:
   version "2.5.2"
